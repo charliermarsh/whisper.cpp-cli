@@ -6,7 +6,7 @@ import sysconfig
 def find_whisper_bin() -> str:
     """Return the whisper binary path."""
 
-    whisper_exe = "whisper" + sysconfig.get_config_var("EXE")
+    whisper_exe = "whisper-cpp" + sysconfig.get_config_var("EXE")
 
     path = os.path.join(sysconfig.get_path("scripts"), whisper_exe)
     if os.path.isfile(path):
