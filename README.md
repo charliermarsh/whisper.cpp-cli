@@ -1,4 +1,4 @@
-# whisper.cpp-py
+# whisper.cpp-cli
 
 A Python wrapper around the [`whisper.cpp`](https://github.com/ggerganov/whisper.cpp) CLI.
 
@@ -48,7 +48,8 @@ acceleration.
 In the future, I'd like to distribute builds with
 [Core ML support](https://github.com/ggerganov/whisper.cpp?tab=readme-ov-file#core-ml-support),
 [CUDA support](https://github.com/ggerganov/whisper.cpp?tab=readme-ov-file#nvidia-gpu-support), and
-more, given `whisper.cpp`'s own support for these features.
+more, given [`whisper.cpp`](https://github.com/ggerganov/whisper.cpp)'s own support for these
+features.
 
 The latest release compiles against [`v1.5.5`](https://github.com/ggerganov/whisper.cpp/releases/tag/v1.5.5).
 

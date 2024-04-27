@@ -3,7 +3,7 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "whisper.cpp-py"
+name = "whisper.cpp-cli"
 version = "0.0.1"
 description = "A Python package for the whisper.cpp CLI."
 authors = [{ name = "Charlie Marsh", email = "charlie.r.marsh@gmail.com" }]
