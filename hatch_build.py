@@ -52,3 +52,26 @@ class WhisperCppBuildHook(BuildHookInterface):
         build_data['shared_scripts'] = {
             WHISPER_BINARY: "whisper-cpp"
         }
+        build_data['tag'] = self._infer_tag()
+
+    def _infer_tag(self) -> str:
+        import sys
+
+        from packaging.tags import sys_tags
+
+        tag = next(sys_tags())
+        tag_platform = tag.platform
+
+        archflags = os.environ.get('ARCHFLAGS', '')
+        if sys.platform == 'darwin':
+            if archflags and sys.version_info[:2] >= (3, 8):
+                import platform
+                import re
+
+                archs = re.findall(r'-arch (\S+)', archflags)
+                if archs:
+                    current_arch = platform.mac_ver()[2]
+                    new_arch = 'universal2' if set(archs) == {'x86_64', 'arm64'} else archs[0]
+                    tag_platform = f'{tag_platform[: tag_platform.rfind(current_arch)]}{new_arch}'
+
+        return f"py3-none-{tag_platform}"
