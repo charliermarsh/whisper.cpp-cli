@@ -19,6 +19,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
         env:
+          CIBW_TEST_COMMAND: whisper-cpp -h
           CIBW_ARCHS_MACOS: "native"
           CIBW_BUILD: "cp312-*"
 
@@ -51,6 +52,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
         env:
+          CIBW_TEST_COMMAND: whisper-cpp -h
           CIBW_ARCHS_LINUX: ${{ matrix.arch }}
           CIBW_BUILD: "cp312-${{ matrix.tag }}_*"
 
