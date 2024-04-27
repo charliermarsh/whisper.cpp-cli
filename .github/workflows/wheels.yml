@@ -6,12 +6,11 @@ on:
       - main
 
 jobs:
-  build_wheels:
-    name: Build wheels on ${{ matrix.os }}
+  macos:
+    name: macOS (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        # macos-13 is an intel runner, macos-14 is apple silicon
         os: [ macos-13, macos-14 ]
 
     steps:
@@ -20,6 +19,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
         env:
+          CIBW_ARCHS_MACOS: "native"
           CIBW_BUILD: "cp312-*"
 
       - uses: actions/upload-artifact@v4
@@ -27,14 +27,17 @@ jobs:
           name: cibw-wheels-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
 
-  build_linux:
+  linux:
     runs-on: ubuntu-latest
-    name: Build wheels on ${{ matrix.arch }} (${{ matrix.tag }})
+    name: Linux (${{ matrix.arch }}, ${{ matrix.tag }})
     strategy:
       matrix:
-        # macos-13 is an intel runner, macos-14 is apple silicon
         arch: [ x86_64, i686, aarch64, ppc64le, s390x ]
         tag: [ manylinux, musllinux ]
+        exclude:
+          - arch: aarch64
+            tag: musllinux
+
     steps:
       - uses: actions/checkout@v4
 

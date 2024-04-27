@@ -10,6 +10,13 @@ authors = [{ name = "Charlie Marsh", email = "charlie.r.marsh@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.7"
 license = { file = "LICENSE" }
+dependencies = []
 
 [tool.hatch.build.hooks.custom]
 path = "hatch_build.py"
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+extend-select = ["I", "B", "UP"]
