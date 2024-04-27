@@ -1,13 +1,16 @@
-# whisper.cpp
+# whisper.cpp-py
 
 A Python wrapper around the [`whisper.cpp`](https://github.com/ggerganov/whisper.cpp) CLI.
+
+Packages [`whisper.cpp`](https://github.com/ggerganov/whisper.cpp) into pre-built, `pip`-installable
+wheels, for macOS and Linux.
 
 ## Installation
 
 Available on PyPI, with pre-built wheels for macOS and Linux:
 
 ```bash
-pip install whisper.cpp
+pip install whisper.cpp-py
 ```
 
 Once installed, `whisper-cpp` will be exposed as a command-line tool:
@@ -39,8 +42,8 @@ whisper-cpp -m ggml-large-v3-q5_0.bin input.wav --output-txt
 
 ## Development
 
-`whisper.cpp` is compiled without any CPU or GPU acceleration. As such, it should work on any
-platform, but with suboptimal performance.
+[`whisper.cpp`](https://github.com/ggerganov/whisper.cpp) is compiled without any CPU or GPU
+acceleration.
 
 In the future, I'd like to distribute builds with
 [Core ML support](https://github.com/ggerganov/whisper.cpp?tab=readme-ov-file#core-ml-support),
