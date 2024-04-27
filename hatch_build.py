@@ -67,16 +67,19 @@ class WhisperCppBuildHook(BuildHookInterface):
         tag = next(sys_tags())
         tag_platform = tag.platform
 
-        archflags = os.environ.get("ARCHFLAGS", "")
+        # On macOS, set the version based on `MACOSX_DEPLOYMENT_TARGET`.
         if sys.platform == "darwin":
-            if archflags and sys.version_info[:2] >= (3, 8):
-                import platform
-                import re
+            macosx_deployment_target = os.environ.get("MACOSX_DEPLOYMENT_TARGET")
+            if macosx_deployment_target:
+                # Extract the architecture from, e.g., `macosx_14_0_arm64`.
+                if tag_platform.endswith("_arm64"):
+                    tag_arch = "arm64"
+                elif tag_platform.endswith("_x86_64"):
+                    tag_arch = "x86_64"
+                else:
+                    raise ValueError(f"Unknown macOS arch: {tag_platform}")
 
-                archs = re.findall(r"-arch (\S+)", archflags)
-                if archs:
-                    current_arch = platform.mac_ver()[2]
-                    new_arch = "universal2" if set(archs) == {"x86_64", "arm64"} else archs[0]
-                    tag_platform = f"{tag_platform[: tag_platform.rfind(current_arch)]}{new_arch}"
+                # Reconstruct the platform tag with the architecture.
+                tag_platform = f"macosx_{macosx_deployment_target.replace('.', '_')}_{tag_arch}"
 
         return f"py3-none-{tag_platform}"

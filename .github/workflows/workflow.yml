@@ -10,6 +10,10 @@ on:
     types:
       - published
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref_name }}-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: true
+
 jobs:
   build_macos_wheels:
     name: macOS (${{ matrix.os }})
@@ -29,6 +33,7 @@ jobs:
             python -m whisper_cpp -h
           CIBW_ARCHS_MACOS: "native"
           CIBW_BUILD: "cp312-*"
+          MACOSX_DEPLOYMENT_TARGET: ${{ matrix.os == 'macos-13' && '10.12' || '11.0' }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -83,6 +88,25 @@ jobs:
         with:
           name: cibw-sdist
           path: dist/*.tar.gz
+
+  # Verify that the x86_64 wheels work on macOS 11.
+  test_macos_11:
+    name: Test macOS 11
+    runs-on: macos-11
+    needs: build_macos_wheels
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/download-artifact@v4
+      with:
+        name: cibw-wheels-macos-13-0
+        path: wheelhouse
+
+    - name: Install wheel
+      run: pip install wheelhouse/*.whl
+
+    - name: Test wheel
+      run: python -m whisper_cpp -h
 
   upload_pypi:
     needs: [ build_macos_wheels, build_linux_wheels, build_sdist ]
