@@ -1,0 +1,5 @@
+whisper.cpp-*
+build/
+dist/
+whisper_cpp.egg-info/
+bin/

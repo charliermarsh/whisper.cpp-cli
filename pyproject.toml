@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "whisper-cpp"
+version = "0.0.1"
+description = "A Python package for the whisper-cpp CLI."
+authors = [{ name = "Charlie Marsh", email = "charlie.r.marsh@gmail.com" }]
+readme = "README.md"
+requires-python = ">=3.7"
+license = { file = "LICENSE" }
