@@ -10,7 +10,7 @@ wheels, for macOS and Linux.
 Available on PyPI, with pre-built wheels for macOS and Linux:
 
 ```bash
-pip install whisper.cpp-py
+pip install whisper.cpp-cli
 ```
 
 Once installed, `whisper-cpp` will be exposed as a command-line tool:
