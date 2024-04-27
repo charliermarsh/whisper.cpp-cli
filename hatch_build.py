@@ -7,19 +7,20 @@ from typing import Any
 
 from hatchling.builders.hooks.plugin.interface import BuildHookInterface
 
+EXE = ".exe" if os.name == "nt" else ""
+
 WHISPER_CPP_VERSION = "1.5.5"
 WHISPER_CPP_ZIP_URL = (
     f"https://github.com/ggerganov/whisper.cpp/archive/refs/tags/v{WHISPER_CPP_VERSION}.zip"
 )
 WHISPER_DIR = f"whisper.cpp-{WHISPER_CPP_VERSION}"
-WHISPER_BINARY = f"{WHISPER_DIR}/main"
 
 
 class WhisperCppBuildHook(BuildHookInterface):
     PLUGIN_NAME = "whisper-cpp"
 
     def initialize(self, version: str, build_data: dict[str, Any]) -> None:
-        if not os.path.exists(WHISPER_BINARY):
+        if not os.path.exists(f"{WHISPER_DIR}/main{EXE}"):
 
             def download_and_unzip(url, extract_to="."):
                 """
@@ -49,10 +50,16 @@ class WhisperCppBuildHook(BuildHookInterface):
             # Run make to build the whisper-cpp library.
             subprocess.check_call(["make"], cwd=WHISPER_DIR)
 
-        build_data["shared_scripts"] = {WHISPER_BINARY: "whisper-cpp"}
+        build_data["shared_scripts"] = {f"{WHISPER_DIR}/main{EXE}": f"whisper-cpp{EXE}"}
         build_data["tag"] = self._infer_tag()
 
     def _infer_tag(self) -> str:
+        """Infer the appropriate wheel tag.
+
+        Based on Hatchling's own `get_best_matching_tag` as of v1.24.2, with the
+        primary difference being that the plugin generates an ABI and version-agnostic
+        wheel tag, modifying _only_ the platform tag to include the architecture.
+        """
         import sys
 
         from packaging.tags import sys_tags
