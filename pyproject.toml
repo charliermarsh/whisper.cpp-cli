@@ -1,6 +1,6 @@
 [build-system]
-requires = ["setuptools"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [project]
 name = "whisper-cpp"
@@ -10,3 +10,6 @@ authors = [{ name = "Charlie Marsh", email = "charlie.r.marsh@gmail.com" }]
 readme = "README.md"
 requires-python = ">=3.7"
 license = { file = "LICENSE" }
+
+[tool.hatch.build.hooks.custom]
+path = "hatch_build.py"
