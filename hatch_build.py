@@ -64,7 +64,13 @@ class WhisperCppBuildHook(BuildHookInterface):
 
         from packaging.tags import sys_tags
 
-        tag = next(sys_tags())
+        tag = next(
+            iter(
+                tag
+                for tag in sys_tags()
+                if "manylinux" not in tag.platform and "musllinux" not in tag.platform
+            )
+        )
         tag_platform = tag.platform
 
         # On macOS, set the version based on `MACOSX_DEPLOYMENT_TARGET`.
