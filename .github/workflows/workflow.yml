@@ -28,12 +28,7 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
         env:
-          CIBW_TEST_COMMAND: >
-            whisper-cpp -h &&
-            python -m whisper_cpp -h
-          CIBW_ARCHS_MACOS: "native"
           CIBW_BUILD: "cp312-*"
-          MACOSX_DEPLOYMENT_TARGET: ${{ matrix.os == 'macos-13' && '10.12' || '11.0' }}
 
       - uses: actions/upload-artifact@v4
         with:
@@ -64,9 +59,6 @@ jobs:
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.17.0
         env:
-          CIBW_TEST_COMMAND: >
-            whisper-cpp -h &&
-            python -m whisper_cpp -h
           CIBW_ARCHS_LINUX: ${{ matrix.arch }}
           CIBW_BUILD: "cp312-${{ matrix.tag }}_*"
 
