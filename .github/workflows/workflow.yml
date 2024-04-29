@@ -15,6 +15,35 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  build_windows_wheels:
+    name: Windows
+    runs-on: windows-latest
+    strategy:
+      matrix:
+        arch: [x64]
+        build: [Release]
+        sdl2: [OFF]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Add msbuild to PATH
+        uses: microsoft/setup-msbuild@v1
+
+      - name: Configure
+        run: >
+          cmake -S . -B ./build -A ${{ matrix.arch }}
+          -DCMAKE_BUILD_TYPE=${{ matrix.build }}
+          -DWHISPER_SDL2=${{ matrix.sdl2 }}
+
+      - name: Build
+        run: |
+          cd ./build
+          msbuild ALL_BUILD.vcxproj -t:build -p:configuration=${{ matrix.build }} -p:platform=${{ matrix.arch }}
+
+      - name: Show
+        run: ls ./build
+
   build_macos_wheels:
     name: macOS (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
