@@ -15,12 +15,13 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build_macos_wheels:
-    name: macOS (${{ matrix.os }})
+  build_wheels:
+    name: Wheels (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
-        os: [ macos-13, macos-14 ]
+        os: [ macos-13, macos-14, windows-2022 ]
 
     steps:
       - uses: actions/checkout@v4
@@ -39,8 +40,9 @@ jobs:
     runs-on: ubuntu-latest
     name: Linux (${{ matrix.arch }}, ${{ matrix.tag }})
     strategy:
+      fail-fast: false
       matrix:
-        arch: [ x86_64, i686, aarch64, ppc64le, s390x ]
+        arch: [ x86_64, i686, aarch64, ppc64le ]
         tag: [ manylinux, musllinux ]
         # TODO(charlie): Fails to compile, root cause is unexplored.
         exclude:
@@ -85,7 +87,7 @@ jobs:
   test_macos_11:
     name: Test macOS 11
     runs-on: macos-11
-    needs: build_macos_wheels
+    needs: build_wheels
     steps:
     - uses: actions/checkout@v4
 
@@ -101,7 +103,7 @@ jobs:
       run: python -m whisper_cpp -h
 
   upload_pypi:
-    needs: [ build_macos_wheels, build_linux_wheels, build_sdist ]
+    needs: [ build_wheels, build_linux_wheels, build_sdist ]
     runs-on: ubuntu-latest
     environment: pypi
     permissions:
