@@ -1,6 +1,6 @@
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["scikit-build-core"]
+build-backend = "scikit_build_core.build"
 
 [project]
 name = "whisper.cpp-cli"
@@ -12,11 +12,12 @@ requires-python = ">=3.7"
 license = { file = "LICENSE" }
 dependencies = []
 
-[tool.hatch.build.targets.wheel]
-packages = ["whisper_cpp"]
-
-[tool.hatch.build.hooks.custom]
-path = "hatch_build.py"
+[tool.scikit-build]
+minimum-version = "0.9"
+cmake.define.BUILD_SHARED_LIBS = false
+cmake.version = ">=3.28"
+wheel.packages = ["whisper_cpp"]
+wheel.py-api = "py3"
 
 [tool.ruff]
 line-length = 100
@@ -29,11 +30,5 @@ test-command = [
     "whisper-cpp -h",
     "python -m whisper_cpp -h",
 ]
-
-[[tool.cibuildwheel.overrides]]
-select = "*-macosx_x86_64"
 environment.MACOSX_DEPLOYMENT_TARGET = "10.12"
 
-[[tool.cibuildwheel.overrides]]
-select = "*-macosx_arm64"
-environment.MACOSX_DEPLOYMENT_TARGET = "11.0"
