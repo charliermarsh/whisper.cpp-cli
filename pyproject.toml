@@ -26,6 +26,7 @@ line-length = 100
 extend-select = ["I", "B", "UP"]
 
 [tool.cibuildwheel]
+build-frontend = "build[uv]"
 test-command = [
     "whisper-cpp -h",
     "python -m whisper_cpp -h",

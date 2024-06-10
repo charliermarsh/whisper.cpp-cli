@@ -26,8 +26,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Setup uv
+        uses: yezz123/setup-uv@v4
+
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.17.0
+        uses: pypa/cibuildwheel@main
         env:
           CIBW_BUILD: "cp312-*"
 
@@ -58,8 +61,11 @@ jobs:
         with:
           platforms: all
 
+      - name: Setup uv
+        uses: yezz123/setup-uv@v4
+
       - name: Build wheels
-        uses: pypa/cibuildwheel@v2.17.0
+        uses: pypa/cibuildwheel@main
         env:
           CIBW_ARCHS_LINUX: ${{ matrix.arch }}
           CIBW_BUILD: "cp312-${{ matrix.tag }}_*"
