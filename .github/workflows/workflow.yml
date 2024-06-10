@@ -30,7 +30,7 @@ jobs:
         uses: yezz123/setup-uv@v4
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@main
+        uses: pypa/cibuildwheel@v2.19
         env:
           CIBW_BUILD: "cp312-*"
 
@@ -65,7 +65,7 @@ jobs:
         uses: yezz123/setup-uv@v4
 
       - name: Build wheels
-        uses: pypa/cibuildwheel@main
+        uses: pypa/cibuildwheel@v2.19
         env:
           CIBW_ARCHS_LINUX: ${{ matrix.arch }}
           CIBW_BUILD: "cp312-${{ matrix.tag }}_*"
